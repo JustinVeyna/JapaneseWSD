@@ -1,0 +1,7 @@
+.project
+.pydevproject
+*.db
+*.xml
+jsemcor-2012-01
+__pycache__
+.settings
