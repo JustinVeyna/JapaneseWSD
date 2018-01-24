@@ -5,11 +5,13 @@ Word Sense Disambiguation in Japanese.
 * Python
   * [Anaconda (Python 3.6)](https://www.anaconda.com/)
   * [LiClipse (IDE)](https://www.liclipse.com/)
-* PyTorch
+* [PyTorch](http://pytorch.org/)
   * [Seperate repository](https://github.com/JustinVeyna/Exploring-PyTorch) where I learn how to use PyTorch.
 * Japanese WordNet 
   * [WordNet and Corpus](http://compling.hss.ntu.edu.sg/wnja/)
   * [Python wrapper](https://github.com/katryo/wordnet_python)
+* [DB Browser for SQLite](http://sqlitebrowser.org/)
+  * Used to familiarize myself with the data structure of the WordNet.
 
 ## WordNet
 * Installation
@@ -28,6 +30,7 @@ Word Sense Disambiguation in Japanese.
 * Confusions:
   * The word net organization is so complicated that I am unsure how to feed it into a neural network.
   * Synsets What are they? Synonym Sets?
+  * I don't know what many of the words in the above picture, under Usage, mean.
   
 * Structure:
   * Corpus:
@@ -66,3 +69,4 @@ Word Sense Disambiguation in Japanese.
   * WordNet
     * Structure
       * ![alt text](website/imgs/wordnet_tables.png)
+      * Screenshot taken from [DB Browser for SQLite](http://sqlitebrowser.org/)
