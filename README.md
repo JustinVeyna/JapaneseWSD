@@ -27,6 +27,7 @@ Word Sense Disambiguation in Japanese.
 
 * Confusions:
   * The word net organization is so complicated that I am unsure how to feed it into a neural network.
+  * Synsets What are they? Synonym Sets?
   
 * Structure:
   * Corpus:
@@ -62,5 +63,6 @@ Word Sense Disambiguation in Japanese.
                 </span>
                 <component lemma="グランドジュリー" id="c1.1.3" pos="N.名詞.一般"/>
               </term>`
-  *
-  
+  * WordNet
+    * Structure
+      * ![alt text](website/imgs/wordnet_tables.png)
