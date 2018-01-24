@@ -14,6 +14,9 @@ Word Sense Disambiguation in Japanese.
   * Used to familiarize myself with the data structure of the WordNet.
 
 ## WordNet
+* Why use a WordNet?
+  * WordNets, unlike bag of words, capture the meaning of words inherant of their design so for meaning dependant NLP problems having a structure that captures meaning of word is a big plus.
+  
 * Installation
   * Installed both of the zip files for the WordNet and Corpus and just extracted.
   * Downloaded Python wrapper from github
@@ -70,3 +73,23 @@ Word Sense Disambiguation in Japanese.
     * Structure
       * ![alt text](website/imgs/wordnet_tables.png)
       * Screenshot taken from [DB Browser for SQLite](http://sqlitebrowser.org/)
+      
+## Neural Networks
+* [SLTM NN](https://en.wikipedia.org/wiki/Long_short-term_memory)
+  * Why SLTM?
+    * SLTMs are great at remembering words that previously appeared in a document, and for sense detection remembering previous words is a big plus. Furthermore, SLTMs maintain word order, a key factor in WSD.
+* Progress
+  * Input formating
+    * [PyTorchText](https://github.com/pytorch/text)
+      * requires a tabular format
+    * SkipGram
+  
+## Japanese
+* Why Japanese
+  * Todo
+* Difficulties
+  * Todo
+  
+## To look into:
+* WordNet Walk
+* https://github.com/pytorch/text
