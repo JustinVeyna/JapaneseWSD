@@ -9,6 +9,8 @@ References:
 
 import xml.etree.ElementTree as ET
 
+DEFAULT_FILE_PATH = "jsemcor-2012-01/br-a01.xml"
+
 class XMLDoc():
     '''
     A wrapper class for the XML documents.
@@ -32,12 +34,21 @@ class XMLDoc():
     def get_words(self):
         return self.root.iter("wf")
 
-def print_doc(xml_file = "jsemcor-2012-01/br-a01.xml"):
-    '''Prints the original document without any of the XML tags or labels'''
+def original_doc(xml_file = DEFAULT_FILE_PATH, t=list):
+    '''
+    Prints the original document without any of the XML tags or labels
+    t = return type (list or string)
+    '''
+    orig = t()
     docu = XMLDoc(xml_file)
     for term in docu.get_words():
         if term.text != None:
-            print(term.text, end="")
+            orig += t(term.text)
+    return orig
+
+def print_original_doc(xml_file = DEFAULT_FILE_PATH):
+    '''Prints the original document without any of the XML tags or labels'''
+    print(original_doc(xml_file, t=str))
 
 if __name__ == "__main__":
-    print_doc()
+    print_original_doc()
