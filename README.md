@@ -12,10 +12,11 @@ Word Sense Disambiguation in Japanese.
   * [Python wrapper](https://github.com/katryo/wordnet_python)
 * [DB Browser for SQLite](http://sqlitebrowser.org/)
   * Used to familiarize myself with the data structure of the WordNet.
+* [Polygot](https://sites.google.com/site/rmyeid/projects/polyglot)
+  * [Sample Code](http://nbviewer.jupyter.org/gist/aboSamoor/6046170)
   
 ## Word2Vec (Word2Embeddings)
 * [Polygot](https://sites.google.com/site/rmyeid/projects/polyglot)
-  * I referenced this [sample code](http://nbviewer.jupyter.org/gist/aboSamoor/6046170)
   * 2 representations:
     * Japanese (Split by words)
       * ie: `'的', '人', '者', '日本', '第', '後', '市', '行う', '県', '関連', '中', '外部', 'リンク'`
