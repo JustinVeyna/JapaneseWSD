@@ -2,7 +2,7 @@
 Word Sense Disambiguation in Japanese.
 
 ## Resources
-* Python
+* [Python](https://www.python.org/)
   * [Anaconda (Python 3.6)](https://www.anaconda.com/)
   * [LiClipse (IDE)](https://www.liclipse.com/)
 * [PyTorch](http://pytorch.org/)
@@ -18,6 +18,16 @@ Word Sense Disambiguation in Japanese.
   * [Python wrapper](https://pypi.python.org/pypi/mecab-python3)
   * Not in use yet.
   
+## Approach
+# Baseline
+* Setup
+  * Using a pre-trained Word2Vec model and WordNet I plan to create SynSet vector representations by calculating the average vector for all word in each SynSet. 
+*  Predictions
+  * To create a prediction for each ambiguous word I will average the vector value for the sentence and then chose the sense with the closes vector to the sentence average vector.
+*  Evaluation
+  * Using a pre-sense-labeled corpus I will calculate my accuracy.
+
+
 ## Word2Vec (Word2Embeddings)
 * [Polygot](https://sites.google.com/site/rmyeid/projects/polyglot)
   * 2 representations:
