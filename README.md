@@ -13,7 +13,9 @@ Word Sense Disambiguation in Japanese.
 * [DB Browser for SQLite](http://sqlitebrowser.org/)
   * Used to familiarize myself with the data structure of the WordNet.
 * [Polygot](https://sites.google.com/site/rmyeid/projects/polyglot)
-  * [Sample Code](http://nbviewer.jupyter.org/gist/aboSamoor/6046170)
+  * [Sample code](http://nbviewer.jupyter.org/gist/aboSamoor/6046170)
+* [MeCab](http://taku910.github.io/mecab/#download) (Morphological Analysis engine)
+  * [Python wrapper](https://pypi.python.org/pypi/mecab-python3)
   
 ## Word2Vec (Word2Embeddings)
 * [Polygot](https://sites.google.com/site/rmyeid/projects/polyglot)
