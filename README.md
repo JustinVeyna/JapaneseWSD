@@ -16,6 +16,7 @@ Word Sense Disambiguation in Japanese.
   * [Sample code](http://nbviewer.jupyter.org/gist/aboSamoor/6046170)
 * [MeCab](http://taku910.github.io/mecab/#download) (Morphological Analysis engine)
   * [Python wrapper](https://pypi.python.org/pypi/mecab-python3)
+  * Not in use yet.
   
 ## Word2Vec (Word2Embeddings)
 * [Polygot](https://sites.google.com/site/rmyeid/projects/polyglot)
@@ -44,51 +45,52 @@ Word Sense Disambiguation in Japanese.
   * Ran into a problem where the wrapper was giving me an error for "no such table exists."
     * SOLVED: Moved the .db file* into the same directory as wn.py
       * *The .db file is excluded from the repository to save on space.
+      
+* Structure
+  * ![alt text](website/imgs/wordnet_tables.png)
+  * Screenshot taken from [DB Browser for SQLite](http://sqlitebrowser.org/)
 
-* Confusions:
-  * The word net organization is so complicated that I am unsure how to feed it into a neural network.
-  * Synsets What are they? Synonym Sets?
-  * I don't know what many of the words in the above picture, under Usage, mean.
+## Corpus
+* Parsing
+  * Using [XML Trees](https://docs.python.org/3/library/xml.etree.elementtree.html) to process the data.
+  * Then transfering the necessary data to dictionaries.
+  * Using [pickle](https://docs.python.org/3/library/pickle.html) to save the dictionaries
   
 * Structure:
-  * Corpus:
-    * Documents: split up into files.
-      * Text:
-        * Contained information per word:
-          * Word ID
-          * Sentence number
-          * Paragraph number
-          * Raw text for the word
-        * Examples:
-          * `<wf wid="w65.77.21" sent="77" para="65">。</wf>`
-          * `<wf wid="w65.77.22" sent="77" para="65"/>`
-      * Terms
-        * Contained information per word:
-          * Term ID
-          * Associated Word ID
-          * Lemma
-          * Type (I don't understand this)
-          * Part of Speach
-          * Components (ie: "Running" -> "run" + "ing")
-          * Reference to WordNet entry
-        * Examples:
-          * ` <term tid="t1.1.1" lemma="フルトン" type="open" pos="R.名詞.固有名詞.人名.名">
-                <span>
-                  <target id="w1.1.1"/>
-                </span>
-                <component lemma="フルトン" id="c1.1.1" pos="R.名詞.固有名詞.人名.名"/>
-                </term>`
-          * ` <term tid="t1.1.3" lemma="グランドジュリー" type="open" pos="N.名詞.一般">
-                <span>
-                  <target id="w1.1.3"/>
-                </span>
-                <component lemma="グランドジュリー" id="c1.1.3" pos="N.名詞.一般"/>
+  * Documents: split up into files.
+    * Text:
+      * Contained information per word:
+        * Word ID
+        * Sentence number
+        * Paragraph number
+        * Raw text for the word
+      * Examples:
+        * `<wf wid="w65.77.21" sent="77" para="65">。</wf>`
+        * `<wf wid="w65.77.22" sent="77" para="65"/>`
+    * Terms
+      * Contained information per word:
+        * Term ID
+        * Associated Word ID
+        * Lemma
+        * Type (I don't understand this)
+        * Part of Speach
+        * Components (ie: "Running" -> "run" + "ing")
+        * Reference to WordNet entry
+      * Examples:
+        * ` <term tid="t1.1.1" lemma="フルトン" type="open" pos="R.名詞.固有名詞.人名.名">
+              <span>
+                <target id="w1.1.1"/>
+              </span>
+              <component lemma="フルトン" id="c1.1.1" pos="R.名詞.固有名詞.人名.名"/>
               </term>`
-  * WordNet
-    * Structure
-      * ![alt text](website/imgs/wordnet_tables.png)
-      * Screenshot taken from [DB Browser for SQLite](http://sqlitebrowser.org/)
-      
+        * ` <term tid="t1.1.3" lemma="グランドジュリー" type="open" pos="N.名詞.一般">
+              <span>
+                <target id="w1.1.3"/>
+              </span>
+              <component lemma="グランドジュリー" id="c1.1.3" pos="N.名詞.一般"/>
+            </term>`
+  
+
 ## Neural Networks
 * [SLTM NN](https://en.wikipedia.org/wiki/Long_short-term_memory)
   * Why SLTM?
@@ -98,7 +100,14 @@ Word Sense Disambiguation in Japanese.
     * [PyTorchText](https://github.com/pytorch/text)
       * requires a tabular format
     * SkipGram
-  
+
+## MeCab
+* Ran into difficulties trying to install the python wrapper.
+  * `pip install mecab-python3` 
+  * The pip install command gave me an error dealing with Microsoft Visual studios.
+    * Tried a fresh install but still no luck.
+* Avoiding this for now.
+
 ## Japanese
 * Why Japanese
   * Todo
