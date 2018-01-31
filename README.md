@@ -19,7 +19,7 @@ Word Sense Disambiguation in Japanese.
   * Not in use yet.
   
 ## Approach
-# Baseline
+### Baseline
 * Setup
   * Using a pre-trained Word2Vec model and WordNet I plan to create SynSet vector representations by calculating the average vector for all word in each SynSet. 
 *  Predictions
