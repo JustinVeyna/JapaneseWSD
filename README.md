@@ -19,6 +19,7 @@ Word Sense Disambiguation in Japanese.
   * Not in use yet.
   
 ## Approach
+* TODO
 ### Baseline
 * Setup
   * Using a pre-trained Word2Vec model and WordNet I plan to create SynSet vector representations by calculating the average vector for all word in each SynSet. 
@@ -26,6 +27,23 @@ Word Sense Disambiguation in Japanese.
   * To create a prediction for each ambiguous word I will average the vector value for the sentence and then chose the sense with the closes vector to the sentence average vector.
 *  Evaluation
   * Using a pre-sense-labeled corpus I will calculate my accuracy.
+
+## Results
+* each word has an average of 6.372116968698517 senses per word 
+### Random
+* Expected 15.693371683% (1/6.372116968698517)
+* Always guess the first sense: 450/2236 correct 20.125223613595708%
+### Baseline
+* Cosine difference:
+  * Min:
+    * 419/2236 correct 18.73881932021467%
+  * Max:
+    * 349/2236 correct 15.608228980322004%
+* Euclidian
+  * Min
+    * 480/2236 correct 21.46690518783542%
+  * Max
+    * 277/2236 correct 12.388193202146692%
 
 
 ## Word2Vec (Word2Embeddings)
