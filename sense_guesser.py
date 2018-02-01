@@ -11,13 +11,15 @@ from sense_loader import SenseLoader
 from synset_avg_generator import synset_entry
 from xml_parser import ddict, dddict, ddddict
 from collections import namedtuple
-from scipy.spatial.distance import cosine 
+from scipy.spatial.distance import cosine, euclidean
+
 
 BASE_DIR = 'S:/workspace/WSD/'
 DOC_DATA_DIR = BASE_DIR + "jsemcor-2012-01-pickled/"
 SYNSET_DATA_PATH = BASE_DIR + "data/polyglot-ja-synset-avg.pkl"
 WORD2VEC_DATA_DIR = BASE_DIR + 'data/polyglot-ja.pkl'
 
+DIFFERENCE_FORMULA = euclidean
 
 
 def get_word_vec_from_word(word2vec_dic, word):
@@ -36,6 +38,12 @@ def get_vecs_from_senses(sense_dic, senses):
     ret = []
     for sense in senses:
         ret.append(get_vec_from_sense(sense_dic, sense))
+    '''
+    if len(senses) != len(ret):
+        print(len(senses), len(ret))
+        print(senses)
+        print(ret)
+    '''    
     return ret
 
 def get_sentence_avg_vec(word2vec_dic, s):
@@ -76,6 +84,7 @@ if __name__ == '__main__':
     synset_data = load_synset_data()
     correct = 0
     total = 0
+    senses_total = 0
     for f in os.listdir(DOC_DATA_DIR):#document
         print(f)
         doc_words_dic = load_words()
@@ -100,26 +109,27 @@ if __name__ == '__main__':
                     senses_vecs = []
                     for word in words:
                         #print(word)
-                        senses += SenseLoader().load_senses_with_synset(word)
-                        senses_vecs += get_vecs_from_senses(synset_data, senses)
+                        senses_this_ittr = SenseLoader().load_senses_with_synset(word)
+                        senses += senses_this_ittr
+                        senses_vecs += get_vecs_from_senses(synset_data, senses_this_ittr)
                         #print(senses)
                         
-                    guessed_sense_index = 0
-                    if len(senses_vecs) > 1:
-                        cosine_diffs = map(lambda x: cosine(sentence_avg, x), senses_vecs)
+                    if labeled_word_sense != None and len(senses_vecs) > 1:
+                        cosine_diffs = list(map(lambda x: DIFFERENCE_FORMULA(sentence_avg, x), senses_vecs))
                         guessed_sense_index = numpy.argmin(cosine_diffs)
+                        #print(guessed_sense_index)
                     else:
                         continue
+                    senses_total += len(senses)
                     guessed_sense = senses[guessed_sense_index]
                     total += 1
-                    if False:#len(senses) < len(senses_vecs):
-                        print(len(senses), len(senses_vecs))
-                        print(senses, senses_vecs)
                     if guessed_sense.synset == labeled_word_sense:
                         correct += 1
-                        print(correct, ": of {} senses, and {} sense vectors".format(len(senses), len(senses_vecs)))
+                        #print(correct, ": of {} senses, and {} sense vectors".format(len(senses), len(senses_vecs)))
+                    else:
+                        pass#print(guessed_sense.synset, labeled_word_sense)
     print("{}/{} correct {}%".format(correct, total, correct/total*100.0))
-                            
+    #print("{} senses (avg: {})".format(senses_total, senses_total/total))
                         
                     
                     
