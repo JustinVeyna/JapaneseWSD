@@ -10,10 +10,9 @@ from word_loader import WordLoader
 from sense_loader import SenseLoader
 from synset_avg_generator import synset_entry
 from xml_parser import ddict, dddict, ddddict
-from collections import namedtuple
 from scipy.spatial.distance import cosine, euclidean
 from test_class import Test
-
+import matplotlib.pylab as plt
 
 BASE_DIR = 'S:/workspace/WSD/'
 DOC_DATA_DIR = BASE_DIR + "jsemcor-2012-01-pickled/"
@@ -103,12 +102,13 @@ def run_test(test_classes):
 if __name__ == '__main__':
     word2vec_dic = load_word2vec_dic()
     synset_data = load_synset_data()
-    correct = 0
-    total = 0
-    senses_total = 0
-    tests = [Test(euclidean)]
-    
+    tests = [Test(euclidean, name="Euclidean")]
+    max_docs = 100000
+    z=0
     for f in os.listdir(DOC_DATA_DIR):#document
+        z+=1
+        if z > max_docs:
+            break
         print(f)
         doc_words_dic = load_words()
         for p in range(len(doc_words_dic)):#paragraph
@@ -122,11 +122,20 @@ if __name__ == '__main__':
                     labeled_word_sense = word["sense"]
                     senses, senses_vecs = get_senses(word)  
                     for test in tests:
-                        test.run_itteration(labeled_word_sense, senses, senses_vecs, sentence_avg, sentence_length)
+                        test.run_itteration(labeled_word_sense, senses, senses_vecs, sentence_avg, sentence_length, word["text"])
     for test in tests:
         test.print_results()
-    #print("{} senses (avg: {})".format(senses_total, senses_total/total))
+        test.print_sense_details()
+        word_accuracy = test.get_word_accuracy()
+        num_to_print = 5
+        print(word_accuracy[0:num_to_print],word_accuracy[-num_to_print:])
+        to_plt = test.get_plotable_sentence_length_histogram()
+        y,x = list(zip(*to_plt))
+        plt.plot(y,x)
+        plt.suptitle(test.name)
+        plt.show()
                         
+                    
                     
                     
                     
