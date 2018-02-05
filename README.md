@@ -31,19 +31,19 @@ Word Sense Disambiguation in Japanese.
 ## Results
 * each word has an average of 6.372116968698517 senses per word 
 ### Random
-* Expected 15.693371683% (1/6.372116968698517)
-* Always guess the first sense: 450/2236 correct 20.125223613595708%
+* Excluding words with only 1 sense:
+  * Expected 15.693371683% (1/6.372116968698517)
+  * Always guess the first sense: 450/2236 correct 20.125223613595708%
 ### Baseline
-* Cosine difference:
-  * Min:
+* Min Cosine difference:
+  * Excluding words with only 1 sense:
     * 419/2236 correct 18.73881932021467%
-  * Max:
-    * 349/2236 correct 15.608228980322004%
 * Euclidian
-  * Min
+  * Excluding words with only 1 sense:
     * 480/2236 correct 21.46690518783542%
-  * Max
-    * 277/2236 correct 12.388193202146692%
+  * Including words with only 1 sense:
+    * 1008/2877 correct 35.03649635036496%
+
 
 
 ## Word2Vec (Word2Embeddings)
