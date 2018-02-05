@@ -12,6 +12,7 @@ from synset_avg_generator import synset_entry
 from xml_parser import ddict, dddict, ddddict
 from collections import namedtuple
 from scipy.spatial.distance import cosine, euclidean
+from test_class import Test
 
 
 BASE_DIR = 'S:/workspace/WSD/'
@@ -19,7 +20,7 @@ DOC_DATA_DIR = BASE_DIR + "jsemcor-2012-01-pickled/"
 SYNSET_DATA_PATH = BASE_DIR + "data/polyglot-ja-synset-avg.pkl"
 WORD2VEC_DATA_DIR = BASE_DIR + 'data/polyglot-ja.pkl'
 
-DIFFERENCE_FORMULA = euclidean
+DIFFERENCE_FORMULA = euclidean #or Cosine
 
 
 def get_word_vec_from_word(word2vec_dic, word):
@@ -79,56 +80,51 @@ def load_words():
         words = load(s)
     return words
 
+def get_senses(word):
+    words = WordLoader().load_words_with_lemma(word["text"])
+    senses = []
+    senses_vecs = []
+    for word in words:
+        #print(word)
+        senses_this_ittr = SenseLoader().load_senses_with_synset(word)
+        senses += senses_this_ittr
+        senses_vecs += get_vecs_from_senses(synset_data, senses_this_ittr)
+        #print(senses)
+    return (senses, senses_vecs)
+
+def get_closest_sense(sentence_avg, senses_vecs):
+    diffs = list(map(lambda x: DIFFERENCE_FORMULA(sentence_avg, x), senses_vecs))
+    return numpy.argmin(diffs)
+
+def run_test(test_classes):
+    pass
+
+
 if __name__ == '__main__':
     word2vec_dic = load_word2vec_dic()
     synset_data = load_synset_data()
     correct = 0
     total = 0
     senses_total = 0
+    tests = [Test(euclidean)]
+    
     for f in os.listdir(DOC_DATA_DIR):#document
         print(f)
         doc_words_dic = load_words()
-        
         for p in range(len(doc_words_dic)):#paragraph
             p = doc_words_dic[p]
-            
             for s in range(len(p)):#sentence
                 s = p[s]
-                
                 sentence_avg = get_sentence_avg_vec(word2vec_dic, s)
-
+                sentence_length = len(s)
                 for w in range(len(s)):#word
                     word = s[w]
                     labeled_word_sense = word["sense"]
-                    wordtuple = namedtuple("word", "wid")
-                    wordtuple.wid = word["wid"]
-                    #print(word["wid"])
-                    
-                    words = WordLoader().load_words_with_lemma(word["text"])
-                    senses = []
-                    senses_vecs = []
-                    for word in words:
-                        #print(word)
-                        senses_this_ittr = SenseLoader().load_senses_with_synset(word)
-                        senses += senses_this_ittr
-                        senses_vecs += get_vecs_from_senses(synset_data, senses_this_ittr)
-                        #print(senses)
-                        
-                    if labeled_word_sense != None and len(senses_vecs) > 1:
-                        cosine_diffs = list(map(lambda x: DIFFERENCE_FORMULA(sentence_avg, x), senses_vecs))
-                        guessed_sense_index = numpy.argmin(cosine_diffs)
-                        #print(guessed_sense_index)
-                    else:
-                        continue
-                    senses_total += len(senses)
-                    guessed_sense = senses[guessed_sense_index]
-                    total += 1
-                    if guessed_sense.synset == labeled_word_sense:
-                        correct += 1
-                        #print(correct, ": of {} senses, and {} sense vectors".format(len(senses), len(senses_vecs)))
-                    else:
-                        pass#print(guessed_sense.synset, labeled_word_sense)
-    print("{}/{} correct {}%".format(correct, total, correct/total*100.0))
+                    senses, senses_vecs = get_senses(word)  
+                    for test in tests:
+                        test.run_itteration(labeled_word_sense, senses, senses_vecs, sentence_avg, sentence_length)
+    for test in tests:
+        test.print_results()
     #print("{} senses (avg: {})".format(senses_total, senses_total/total))
                         
                     
