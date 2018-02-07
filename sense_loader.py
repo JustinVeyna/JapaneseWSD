@@ -12,7 +12,6 @@ class SenseLoader(AbstractRecordLoader):
         return [self.sense(*row) for row in cur]
 
     def load_sense_with_synset(self, synset, lang='jpn'):
-        cur = self.conn.execute("select * from sense where synset=? and lang=?",
-                                (synset, lang))
+        cur = self.conn.execute("select * from sense where synset=? and lang=?", (synset, lang))
         row = cur.fetchone()
         return row and self.sense(*row) or None

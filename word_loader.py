@@ -14,3 +14,8 @@ class WordLoader(AbstractRecordLoader):
     def load_word_with_wordid(self, wordid):
         cur = self.conn.execute("select * from word where wordid=?", (wordid,))
         return self.word(*cur.fetchone())
+    
+    def load_words_with_lemma_plus(self, lemma):
+        lemma = "%"+lemma+"%"
+        cur = self.conn.execute("select * from word where lemma LIKE ?", (lemma,))
+        return [self.word(*row) for row in cur]
