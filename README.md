@@ -43,16 +43,32 @@ Word Sense Disambiguation in Japanese.
   * Always guess the first sense:978/2877 correct 33.99374348279458%
     
 ### Baseline
-* Min Cosine difference:
+* Min Cosine difference (Sentence level):
   * Excluding words with only 1 sense:
     * 419/2236 correct 18.73881932021467%
   * Including words with only 1 sense:
     * 947/2877 correct 32.91623218630518%
-* Euclidian
+* Euclidian (Sentence level):
   * Excluding words with only 1 sense:
     * 480/2236 correct 21.46690518783542%
   * Including words with only 1 sense:
-    * 1008/2877 correct 35.03649635036496%
+    * 1008/2877 correct 35.03649635036496%, MRR: 0.5400526713748174
+* Euclidian (Paragraph level):
+  * Including words with only 1 sense:
+    Euclidean: 2311/6738 correct 34.29801127931137%, MRR: 0.5318048949849659
+* Sense Ignorance:
+  * Caused by lemmas not containing all the senses of words they are part of.
+    * For example the word "be" might not have the senses to "to be"
+    * In this case ある does not contain all the senses for:　である　ではある　でござる
+  * In 725 of the 2877 cases the word is not even linked to the labeled sense.
+    * The top 3 cases for this take up 103 cases of this
+      * 的:54　ある:34　者:15
+  * Ignoring these cases the results are:
+    * 1008/2152 correct 46.84014869888476%, MRR: 0.6381664743195018
+  * If I include the senses for all the words each lemma is included in:
+    * There's an average of 199.16218692730604 senses per lemma. (Dramatic increase)
+    * Euclidean: 841/3274 correct 25.687232742822236%, MRR: 0.39231838401264696
+
 
 
 
