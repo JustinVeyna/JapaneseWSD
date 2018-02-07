@@ -69,8 +69,14 @@ Word Sense Disambiguation in Japanese.
     * There's an average of 199.16218692730604 senses per lemma. (Dramatic increase)
     * Euclidean: 841/3274 correct 25.687232742822236%, MRR: 0.39231838401264696
 
+## Sanity Check
+* Ran a test creating a vector that equates to the average of "similar" and "also" synlinked synsets and tried to figure out the worrd sense of a word in that synset.
+* 75473/93833 correct for 80.43332303134292%
 
-
+## Observations
+* Sentence length in relation to accuracy:
+  * Slight positive correlation, the larger the sentence length the more accurate the WSD, but the results are very noisy.
+  * ![alt text](website/imgs/euclidian_sentence_length_vs_accuracy.png)
 
 ## Word2Vec (Word2Embeddings)
 * [Polygot](https://sites.google.com/site/rmyeid/projects/polyglot)
@@ -93,7 +99,9 @@ Word Sense Disambiguation in Japanese.
 
 * Usage:
   * Using the wrapper, entries can be looked up through calling the wn.py file:
-    * ![alt text](website/imgs/wordnet_invocation.png)
+    * ![
+    
+    text](website/imgs/wordnet_invocation.png)
 
 * Problems:
   * Ran into a problem where the wrapper was giving me an error for "no such table exists."
