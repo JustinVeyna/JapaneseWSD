@@ -52,10 +52,12 @@ Word Sense Disambiguation in Japanese.
   * Excluding words with only 1 sense:
     * 480/2236 correct 21.46690518783542%
   * Including words with only 1 sense:
-    * 1008/2877 correct 35.03649635036496%, MRR: 0.5400526713748174
+    * 19983/55541 correct 35.97882645253057%, MRR: 0.5419437071284936
+    * Fixed a bug causing only the 1st document to be tested (Accounts for the increase in words)
+      * Notably, there was a very insignificant change to the acuracy (less than .5%)
 * Euclidian (Paragraph level):
   * Including words with only 1 sense:
-    Euclidean: 2311/6738 correct 34.29801127931137%, MRR: 0.5318048949849659
+    Euclidean: 20058/55754 correct 35.97589410625247%, MRR: 0.5421887848793427
 * Sense Ignorance:
   * Caused by lemmas not containing all the senses of words they are part of.
     * For example the word "be" might not have the senses to "to be"
