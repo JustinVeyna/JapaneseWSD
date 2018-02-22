@@ -20,7 +20,7 @@ SYNSET_DATA_PATH = BASE_DIR + "data/polyglot-ja-synset-avg.pkl"
 WORD2VEC_DATA_DIR = BASE_DIR + 'data/polyglot-ja.pkl'
 
 DIFFERENCE_FORMULA = euclidean #or Cosine
-CONTEXT_SIZE = "sentence"#"sentence"
+CONTEXT_SIZE = "paragraph"#"sentence"
 
 
 def load_synset_data():
@@ -35,7 +35,7 @@ def load_word2vec_dic():
     word2vec_dic = dict(zip(words, embeddings))
     return word2vec_dic
 
-def load_words():
+def load_words(f):
     #returns {paragraph# : {sentence# : {word# : {"wid" : w_id(not the wordnet wordid),"text": text,"sense": sense_id(the wordnet one)}}}}
     with open(DOC_DATA_DIR + f, "rb") as s:
         words = load(s)
@@ -59,11 +59,12 @@ def get_vecs_from_senses(sense_dic, senses):
         ret.append(get_vec_from_sense(sense_dic, sense))
     return ret
 
-def get_paragraph_average(word2vec_dic, p):
+def get_paragraph_average(word2vec_dic, p, sentence_count = 0):
     paragraph_avg = numpy.zeros(64)
     count = 0
-    for s in range(len(p)):#sentence
-        for word in p[s].values():
+    for _ in range(len(p)):#sentence
+        sentence_count += 1
+        for word in p[sentence_count].values():
             text = word["text"]
             if text in word2vec_dic:
                 vec_val = get_word_vec_from_word(word2vec_dic, text)
@@ -128,22 +129,26 @@ if __name__ == '__main__':
     max_docs = 100000
     z=0
     sanity_check = 0
+    
+    
     for f in os.listdir(DOC_DATA_DIR):#document
         z+=1
         if z > max_docs:
             break
         print(f)
-        doc_words_dic = load_words()
-        
+        doc_words_dic = load_words(f)
+        sentence_count = 0
         for para in range(len(doc_words_dic)):#paragraph
             p = doc_words_dic[para]
             if CONTEXT_SIZE == "paragraph":
-                words_count, words_avg = get_paragraph_average(word2vec_dic, doc_words_dic[para])
-            for sent in range(len(doc_words_dic[para])):#sentence
+                words_count, words_avg = get_paragraph_average(word2vec_dic, p, sentence_count)
+            for _ in range(len(p)):#sentence
+                sentence_count +=1
+                s = p[sentence_count]
                 if CONTEXT_SIZE == "sentence":
-                    words_count, words_avg = get_sentence_avg_vec(word2vec_dic, doc_words_dic[para][sent])
-                for w in range(len(doc_words_dic[para][sent])):#word
-                    word = doc_words_dic[para][sent][w]
+                    words_count, words_avg = get_sentence_avg_vec(word2vec_dic, s)
+                for w in range(len(s)):#word
+                    word = s[w]
                     labeled_word_sense = word["sense"]
                     senses, senses_vecs = get_senses(word["text"], synset_data)  
                     for test in tests:
