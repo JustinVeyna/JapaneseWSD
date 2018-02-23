@@ -8,6 +8,7 @@ from sense_guesser import get_senses, load_word2vec_dic, load_synset_data
 from synset_avg_generator import synset_entry
 import tinysegmenter
 import numpy
+from synset_def_loader import SynsetDefLoader
 
 class Sentence():
     def __init__(self, word2vec_dic, synset_data, raw_sentence):
@@ -54,8 +55,7 @@ class Sentence():
             word_vec = self.word2vec_dic[word]
             senses, senses_vecs = get_senses(word, self.synset_data)
             sense_guesses = self._sense_ranker(senses_vecs, senses, word_vec)
-        
-        print(sense_guesses)
+        #print(sense_guesses)
         return sense_guesses
 
 if __name__ == '__main__':
@@ -64,5 +64,8 @@ if __name__ == '__main__':
     sentence =  "こんにちは、私の声は聞こえますか。"#input()
     s = Sentence(word2vec_dic, synset_data, sentence)
     for i in range(s.word_count):
-        s.guess_sense(i)
+        sense_guesses = s.guess_sense(i)
+        for score, sense in sense_guesses:
+            sense_definition = SynsetDefLoader().load_syndef_with_sense(sense)
+            print(score, [x.defin for x in sense_definition])
     
