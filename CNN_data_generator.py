@@ -34,14 +34,14 @@ def word_to_senses(synset_data, word):
             sense = senses[i]
             sense = sense.synset
             #print(sense, labeled_word_sense)
-            word_senses.append(sense_vecs[i])
+            word_senses.append(sense_vecs[i])#type
             if sense == labeled_word_sense:
                 #correct
                 correctness.append(1)
             else:
                 #incorrect
                 correctness.append(0)
-    return word_senses, correctness
+    return numpy.array(word_senses), numpy.array(correctness) #list
 
 
 def make_sentence_array(word2vec_dic, synset_data, sentence):
@@ -52,7 +52,7 @@ def make_sentence_array(word2vec_dic, synset_data, sentence):
         word = sentence[w]
         if word["text"] in word2vec_dic:
             word_array = get_word_vec_from_word(word2vec_dic, word["text"])
-            sentence_array.append(word_array)
+            sentence_array.append(word_array)#list
             
             word_senses, correctness_temp = word_to_senses(synset_data, word)
             words_senses.append(word_senses)
@@ -70,7 +70,7 @@ def make_sentence_array(word2vec_dic, synset_data, sentence):
 def zero_out_word(sent_arr, word_index):
     word_omitted_sentence = sent_arr[:]
     #word_index = word_omitted_sentence.index(word_vec)
-    word_omitted_sentence[word_index]=numpy.zeros(numpy.size(word_omitted_sentence[word_index]))
+    word_omitted_sentence[word_index]=numpy.zeros(numpy.size(word_omitted_sentence[word_index]), dtype=float)#list
     return word_omitted_sentence
 
 if __name__ == '__main__':
@@ -94,6 +94,8 @@ if __name__ == '__main__':
                 sent_arr, correctness = make_sentence_array(word2vec_dic, synset_data, s)
                 data_x.extend(sent_arr)
                 data_y.extend(correctness)
+    data_x = numpy.array(data_x)
+    data_y = numpy.array(data_y)
     with open(CNN_DATA_PATH, "wb") as f:
         dump((data_x,data_y), f)
     print(data_x[0], data_y[0])

@@ -101,10 +101,12 @@ def get_senses(word_to_check, synset_data):
         senses += senses_this_ittr
         senses_vecs += get_vecs_from_senses(synset_data, senses_this_ittr)
         #print(senses)
+    '''
     if len(senses) > 200:
         print("This word: ", word_to_check)
         GET_SENSE_CALCULATED[word_to_check] = ([],[])
         return ([],[])
+    '''
     GET_SENSE_CALCULATED[word_to_check] = (senses, senses_vecs)
     return (senses, senses_vecs)
 
@@ -112,6 +114,7 @@ def get_closest_sense(sentence_avg, senses_vecs):
     diffs = list(map(lambda x: DIFFERENCE_FORMULA(sentence_avg, x), senses_vecs))
     return numpy.argmin(diffs)
 
+'''
 def run_test(test_classes, sentence_tokens, word, word2vec_dic=load_word2vec_dic(), synset_data=load_synset_data()):
     sentence_avg = get_sentence_avg_vec(word2vec_dic, sentence_tokens)
     sentence_length = len(sentence_tokens)
@@ -120,6 +123,7 @@ def run_test(test_classes, sentence_tokens, word, word2vec_dic=load_word2vec_dic
         senses, senses_vecs = get_senses(word, synset_data)  
         for test in tests:
             test.run_test(labeled_word_sense, senses, senses_vecs, sentence_avg, sentence_length, word["text"])
+'''
 
 
 if __name__ == '__main__':
