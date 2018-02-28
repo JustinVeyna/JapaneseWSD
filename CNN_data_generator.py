@@ -14,12 +14,13 @@ MAX_DOCS = 1000000000
 
 CNN_DATA_PATH = BASE_DIR + "data/cnn_data.pkl"
 
-def merge_data(sentence_array,words_senses):
+def merge_data(sentence_array,words_senses, mode):
     ret = []
     for i in range(len(sentence_array)):
-        word_omitted_sentence = zero_out_word(sentence_array, i)
+        if mode == "CNN":
+            sentence_array = zero_out_word(sentence_array, i)
         for sense_vec in words_senses[i]:
-            ret.append(word_omitted_sentence+[sense_vec])
+            ret.append(sentence_array+[sense_vec])
     return ret
             
 
@@ -41,24 +42,27 @@ def word_to_senses(synset_data, word):
             else:
                 #incorrect
                 correctness.append(0)
-    return numpy.array(word_senses), numpy.array(correctness) #list
+    return word_senses, correctness #list
 
 
-def make_sentence_array(word2vec_dic, synset_data, sentence):
+def make_sentence_array(word2vec_dic, synset_data, sentence, mode="CNN"):
     sentence_array = []
     words_senses = []
     correctness = []
     for w in range(len(sentence)):
         word = sentence[w]
-        if word["text"] in word2vec_dic:
+        if mode == "CNN":
+            if word["text"] in word2vec_dic:
+                word_array = get_word_vec_from_word(word2vec_dic, word["text"])
+                sentence_array.append(word_array)#list
+        elif mode == "WordBag":
             word_array = get_word_vec_from_word(word2vec_dic, word["text"])
             sentence_array.append(word_array)#list
+        word_senses, correctness_temp = word_to_senses(synset_data, word)
+        words_senses.append(word_senses)
+        correctness.extend(correctness_temp)
             
-            word_senses, correctness_temp = word_to_senses(synset_data, word)
-            words_senses.append(word_senses)
-            correctness.extend(correctness_temp)
-            
-    merged_data = merge_data(sentence_array,words_senses)
+    merged_data = merge_data(sentence_array,words_senses, mode=mode)
     '''
     if 1 in correctness:
         print(correctness)
