@@ -9,14 +9,21 @@ from bag_of_words import WordBag
 WORD_BAG_DATA_PATH = 'S:/workspace/WSD/data/word_bag_data'
 
 
-def word_bag_merge_data(words_list, words_senses):
+def word_bag_merge_data(words_list, words_senses,form = None):
     ret = []
-    for word in words_senses:
-        for sense in word:
-            ret.append(words_list + list(sense.astype(float)))
+    if form == None:
+        for word in words_senses:
+            for sense in word:
+                ret.append(words_list + list(sense.astype(float)))
+    else:
+        for word in words_senses:
+            senses_temp = []
+            for sense in word:
+                senses_temp.append(words_list + list(sense.astype(float)))
+            ret.append(senses_temp)
     return ret
 
-def word_bag_make_sentence_array(word2vec_dic, synset_data, sentence):
+def word_bag_make_sentence_array(word2vec_dic, synset_data, sentence, form = None):
     sentence_array = WordBag(word2vec_dic)
     words_senses = []
     correctness = []
@@ -27,7 +34,7 @@ def word_bag_make_sentence_array(word2vec_dic, synset_data, sentence):
         word_senses, correctness_temp = word_to_senses(synset_data, word)
         words_senses.append(word_senses)
         correctness.extend(correctness_temp)
-        merged_data = word_bag_merge_data(sentence_array.words_list,words_senses)
+        merged_data = word_bag_merge_data(sentence_array.words_list,words_senses, form)
     return (merged_data,correctness)
 
 if __name__ == '__main__':

@@ -6,14 +6,8 @@ Created on Mar 6, 2018
 
 
 import tensorflow as tf
-import numpy
-import matplotlib.pyplot as plt
-import os
-from pickle import load
-from bag_of_words_data_generator import WORD_BAG_DATA_PATH, DOC_DATA_DIR
-from sense_guesser import BASE_DIR
-from heapdict import doc
-from nltk.parse.featurechart import sent
+from bag_of_words_data_generator import *
+import numpy as np
 export_dir = BASE_DIR + "bag_of_words_model.mdl"
 
 def run_pred(d, X):
@@ -31,7 +25,7 @@ def run_pred(d, X):
 if __name__ == '__main__':
     with open(export_dir, "rb") as f:
         d = load(f)
-    
+    '''
     for doc:
         for sent:
             #make bag or words
@@ -45,4 +39,44 @@ if __name__ == '__main__':
                 #if correct then correct+=1
                 #total +=1
     #Calculate acc
-                
+    '''
+    word2vec_dic = load_word2vec_dic()
+    synset_data = load_synset_data()
+    z = 0
+    correct = 0
+    total = 0
+    with tf.Session() as sess:
+        for f in os.listdir(DOC_DATA_DIR):#document
+            z+=1
+            if z > MAX_DOCS:
+                break
+            print(f)
+            doc_words_dic = load_words(f)
+            sentence_count = 0
+            data_x = []
+            data_y = []
+            for para in range(len(doc_words_dic)):#paragraph
+                p = doc_words_dic[para]
+                for _ in range(len(doc_words_dic[para])):#sentence
+                    sentence_count += 1
+                    print(sentence_count)
+                    s = doc_words_dic[para][sentence_count]
+                    sent_arr, correctness = word_bag_make_sentence_array(word2vec_dic, synset_data, s, form=True)
+                    ind=0
+                    for i in range(len(sent_arr)):
+                        sense_closeness =[]
+                        correct_index = 0
+                        for j in range(len(sent_arr[i])):
+                            score = (correctness[ind]*-1) * -sess.run(run_pred(d, np.asarray(sent_arr[i][j]).astype("float32")))
+                            sense_closeness.append(score)
+                            if correctness[ind]==1:
+                                correct_index = j
+                            ind+=1
+                        if len(sense_closeness) > 0:
+                            if sense_closeness.index(max(sense_closeness)) == correct_index:
+                                correct+=1
+                            total+=1
+        print(correct, total)
+        print(correct/total)
+                            
+                    
