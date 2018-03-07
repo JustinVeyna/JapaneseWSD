@@ -75,6 +75,10 @@ with tf.Session() as sess:
     for (x,y) in zip(test_X, test_Y):
         res = sess.run(pred, feed_dict={X: x, Y: y})
         predictions.append(res)
-    loss = tf.losses.mean_squared_error(test_Y, predictions)
-    print(sess.run(loss))
+    loss = tf.losses.log_loss(test_Y, predictions)
+    #loss2 = tf.losses.log_loss(test_Y, 2112*[0])
+    #loss3 = tf.losses.log_loss(test_Y, 2112*[1])
+    print(sess.run(loss))  #2.0111
+    print(sess.run(loss2)) #2.65582
+    print(sess.run(loss3)) #13.4623
 

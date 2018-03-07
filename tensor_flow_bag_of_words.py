@@ -35,7 +35,7 @@ for fp in all_file_paths:
         train_x_temp, train_y_temp = load(f)
         train_X.extend(train_x_temp)
         train_Y.extend(train_y_temp)
-    if len(train_X) > 1000:
+    if len(train_X) > 100000:
         break
         
 
