@@ -40,7 +40,8 @@ if __name__ == '__main__':
         with open(WORD_BAG_DATA_PATH+f+".pkl", "rb") as fi:
             print(WORD_BAG_DATA_PATH+f+".pkl", "rb")
             x_train, y_train = load(fi)
-        inputs = Variable([FloatTensor(x) for x in x_train])
+        inputs = [Variable(FloatTensor(x)) for x in x_train][0]
+        print(inputs.size())
         targets = Variable(FloatTensor(y_train))
     
         # Forward + Backward + Optimize

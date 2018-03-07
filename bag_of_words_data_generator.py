@@ -33,8 +33,6 @@ def word_bag_make_sentence_array(word2vec_dic, synset_data, sentence):
 if __name__ == '__main__':
     word2vec_dic = load_word2vec_dic()
     synset_data = load_synset_data()
-    data_x = []
-    data_y = []
     z = 0
     for f in os.listdir(DOC_DATA_DIR):#document
         z+=1
@@ -43,16 +41,18 @@ if __name__ == '__main__':
         print(f)
         doc_words_dic = load_words(f)
         sentence_count = 0
+        data_x = []
+        data_y = []
         for para in range(len(doc_words_dic)):#paragraph
             p = doc_words_dic[para]
             for _ in range(len(doc_words_dic[para])):#sentence
                 sentence_count += 1
                 s = doc_words_dic[para][sentence_count]
                 sent_arr, correctness = word_bag_make_sentence_array(word2vec_dic, synset_data, s)
-                #data_x.extend(sent_arr)
-                #data_y.extend(correctness)
+                data_x.extend(sent_arr)
+                data_y.extend(correctness)
         with open(WORD_BAG_DATA_PATH+f+".pkl", "wb") as f:
-            dump((sent_arr,correctness), f)
+            dump((data_x,data_y), f)
     '''
     data_x = numpy.array(data_x)
     data_y = numpy.array(data_y)

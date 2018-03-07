@@ -48,7 +48,7 @@ if __name__ == '__main__':
         print(value)
     '''
     with open(SAVE_DIR, "wb") as f:
-        pickle.dump(SYNSET_VEC_AVG,f)
+        pickle.dump(dict(SYNSET_VEC_AVG),f)
                 
         
         

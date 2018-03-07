@@ -28,7 +28,7 @@ class Sentence():
         sentence_avg = numpy.zeros(64)
         count = 0
         for word in self.tokens:
-            if word in word2vec_dic:
+            if word in self.word2vec_dic:
                 vec_val = self.word2vec_dic[word]
                 sentence_avg += vec_val
                 count+=1
@@ -58,6 +58,18 @@ class Sentence():
         #print(sense_guesses)
         return sense_guesses
 
+def sentence_to_output(sentence):
+    output = ""
+    word2vec_dic = load_word2vec_dic()
+    synset_data = load_synset_data()
+    s = Sentence(word2vec_dic, synset_data, sentence)
+    for i in range(s.word_count):
+        output += "\n" + s.tokens[i] + "<br/>\n"
+        sense_guesses = s.guess_sense(i)
+        for score, sense in sense_guesses:
+            sense_definition = SynsetDefLoader().load_syndef_with_sense(sense)
+            output +=str(score) + str([x.defin for x in sense_definition]) + "<br/>"
+    return output
 if __name__ == '__main__':
     word2vec_dic = load_word2vec_dic()
     synset_data = load_synset_data()
