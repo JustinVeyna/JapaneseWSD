@@ -4,6 +4,7 @@ Created on Mar 6, 2018
 @author: Justin Veyna
 referemced:
 https://stackoverflow.com/questions/12277933/send-data-from-a-textbox-into-flask
+http://flask.pocoo.org/
 '''
 from flask import Flask, request, render_template
 from synset_avg_generator import synset_entry
